@@ -14,16 +14,16 @@ func main() {
 		AllowedOrigins:   []string{"*"}, //允许通过的主机名称
 		AllowCredentials: true,
 	})
-	m2m := app.Party("/m2m", crs).AllowMethods(iris.MethodOptions)
+	iot1 := app.Party("/iot1", crs).AllowMethods(iris.MethodOptions)
 
 	//前端
-	front := m2m.Party("/front")
+	front := iot1.Party("/front")
 	//前端获取实时数据
 	front.Get("/getTemp", handlers.GetTemp)
 	front.Get("/getHumi", handlers.GetHumi)
 
 	//接收传感器发来的内容
-	sensor := m2m.Party("/sensor")
+	sensor := iot1.Party("/sensor")
 	sensor.Post("/humitemp", handlers.SendHumiTemp)
 
 	//向传感器发送数据
