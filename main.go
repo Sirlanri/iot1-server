@@ -17,10 +17,9 @@ func main() {
 	iot1 := app.Party("/iot1", crs).AllowMethods(iris.MethodOptions)
 
 	//前端
-	front := iot1.Party("/front")
+	front := iot1.Party("/web")
 	//前端获取实时数据
-	front.Get("/getTemp", handlers.GetTemp)
-	front.Get("/getHumi", handlers.GetHumi)
+	front.Get("/getRealtime", handlers.GetRealtime)
 
 	//接收传感器发来的内容
 	sensor := iot1.Party("/sensor")

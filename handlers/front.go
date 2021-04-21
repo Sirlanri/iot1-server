@@ -23,19 +23,12 @@ func GetWeekTempHumi(con iris.Context) {
 	con.JSON(data)
 }
 
-//GetTemp 获取当前温度
-func GetTemp(con iris.Context) {
+//GetRealtime 获取内存中的实时温湿度数据
+func GetRealtime(con iris.Context) {
 	temp := fmt.Sprintf("%.2f", Temp)
+	humi := fmt.Sprintf("%2f", Humi)
 	data := map[string]string{
 		"temp": temp,
-	}
-	con.JSON(data)
-}
-
-//GetHumi 获取当前湿度
-func GetHumi(con iris.Context) {
-	humi := fmt.Sprintf("%.2f", Humi)
-	data := map[string]string{
 		"humi": humi,
 	}
 	con.JSON(data)
