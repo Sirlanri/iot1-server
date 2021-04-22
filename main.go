@@ -20,7 +20,7 @@ func main() {
 	front := iot1.Party("/web")
 	//前端获取实时数据
 	front.Get("/getRealtime", handlers.GetRealtime)
-
+	front.Get("/setled", handlers.Setled)
 	//接收传感器发来的内容
 	sensor := iot1.Party("/sensor")
 	sensor.Post("/humitemp", handlers.SendHumiTemp)

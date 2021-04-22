@@ -7,16 +7,6 @@ import (
 	"github.com/sirlanri/iot1-server/sqls"
 )
 
-//GetTimePer 数据统计页面，获取有无人的统计次数
-func GetTimePer(con iris.Context) {
-	have, no := sqls.GetTimePer()
-	data := map[string]int{
-		"have": have,
-		"no":   no,
-	}
-	con.JSON(data)
-}
-
 //GetWeekTempHumi 获取一周温度湿度的平均值列表
 func GetWeekTempHumi(con iris.Context) {
 	data := sqls.GetWeekTempHumi()
@@ -34,11 +24,16 @@ func GetRealtime(con iris.Context) {
 	con.JSON(data)
 }
 
-//GetLight 获取当前光强
-func GetLight(con iris.Context) {
-	light := Light
-	data := map[string]int{
-		"light": light,
+//Setled 前端控制LED
+func Setled(con iris.Context) {
+	auth := con.URLParam("auth")
+	if auth != "iris" {
+		con.WriteString("无权限操作")
+		return
 	}
-	con.JSON(data)
+	//操作码：on off blink
+	code := con.URLParam("code")
+	if code == "on" || code == "off" || code == "blink" {
+		SendMqttString(code)
+	}
 }

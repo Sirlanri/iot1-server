@@ -6,6 +6,7 @@ import (
 	"github.com/kataras/iris/v12"
 )
 
+//SendHumiTemp 接收树莓派发来的温湿度信息
 func SendHumiTemp(con iris.Context) {
 	humi, err := con.URLParamFloat64("humi")
 	if err != nil {
