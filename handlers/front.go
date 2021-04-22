@@ -28,6 +28,7 @@ func GetRealtime(con iris.Context) {
 func Setled(con iris.Context) {
 	auth := con.URLParam("auth")
 	if auth != "iris" {
+		con.StatusCode(201)
 		con.WriteString("无权限操作")
 		return
 	}

@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/kataras/iris/v12"
+	"github.com/sirlanri/iot1-server/sqls"
 )
 
 //SendHumiTemp 接收树莓派发来的温湿度信息
@@ -20,4 +21,15 @@ func SendHumiTemp(con iris.Context) {
 		return
 	}
 	Temp = temp
+	Count++
+	//如果满60次，写入数据库
+	if Count == 5 {
+		fmt.Println("次数满 开始写入数据库")
+		go func() {
+			sqls.TempRes(float32(temp))
+			sqls.HumiRes(float32(humi))
+		}()
+		Count = 0
+	}
+
 }
