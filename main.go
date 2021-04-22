@@ -21,6 +21,8 @@ func main() {
 	//前端获取实时数据
 	front.Get("/getRealtime", handlers.GetRealtime)
 	front.Get("/setled", handlers.Setled)
+	front.Get("/getWeekdata", handlers.GetWeekTempHumi)
+
 	//接收传感器发来的内容
 	sensor := iot1.Party("/sensor")
 	sensor.Post("/humitemp", handlers.SendHumiTemp)
