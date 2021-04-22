@@ -16,7 +16,7 @@ func GetWeekTempHumi(con iris.Context) {
 //GetRealtime 获取内存中的实时温湿度数据
 func GetRealtime(con iris.Context) {
 	temp := fmt.Sprintf("%.2f", Temp)
-	humi := fmt.Sprintf("%2f", Humi)
+	humi := fmt.Sprintf("%.2f", Humi)
 	data := map[string]string{
 		"temp": temp,
 		"humi": humi,
