@@ -8,8 +8,8 @@ var dev = true
 
 //SQLConfg 数据库信息
 func SQLConfg() string {
-	var local = "root:123456@/mym2m"
-	var serve = "m2m:123456@/mym2m"
+	var local = "root:123456@/iot1"
+	var serve = "iot1:123456@/iot1"
 	if dev {
 		return local
 	}
