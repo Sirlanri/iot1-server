@@ -36,5 +36,7 @@ func Setled(con iris.Context) {
 	code := con.URLParam("code")
 	if code == "on" || code == "off" || code == "blink" {
 		SendMqttString(code)
+		return
 	}
+	con.WriteString("传入数据不合法")
 }
