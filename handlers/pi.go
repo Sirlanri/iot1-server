@@ -23,7 +23,7 @@ func SendHumiTemp(con iris.Context) {
 	Temp = temp
 	Count++
 	//如果满60次，写入数据库
-	if Count == 5 {
+	if Count == 6000 {
 		fmt.Println("次数满 开始写入数据库")
 		go func() {
 			res1 := sqls.TempRes(float32(temp))
@@ -34,5 +34,9 @@ func SendHumiTemp(con iris.Context) {
 		}()
 		Count = 0
 	}
+	//strTemp := strconv.FormatFloat(temp, 'f', 2, 64)
+	//strHumi := strconv.FormatFloat(humi, 'f', 2, 64)
+	words := fmt.Sprintf("温湿度接收成功\n温度：%.2f\n湿度%.2f", temp, humi)
+	SendMqttInfo(words)
 
 }

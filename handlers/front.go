@@ -22,6 +22,7 @@ func GetRealtime(con iris.Context) {
 		"humi": humi,
 	}
 	con.JSON(data)
+	SendMqttInfo("获取实时数据")
 }
 
 //Setled 前端控制LED
@@ -39,4 +40,5 @@ func Setled(con iris.Context) {
 		return
 	}
 	con.WriteString("传入数据不合法")
+
 }

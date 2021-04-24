@@ -85,5 +85,16 @@ func SendMqttString(payload string) {
 		}
 		token.Wait()
 	}()
+}
 
+//SendMqttInfo 通过mqtt发送报错/消息，文本格式
+func SendMqttInfo(payload string) {
+	go func() {
+		token := c.Publish("iot1/server/info", 2, false, payload)
+		err := token.Error()
+		if err != nil {
+			fmt.Println("mqtt出错", err.Error())
+		}
+		token.Wait()
+	}()
 }
