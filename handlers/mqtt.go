@@ -14,6 +14,11 @@ import (
 var f mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Message) {
 	fmt.Printf("主题: %s\n", msg.Topic())
 	fmt.Printf("消息内容: %s\n", msg.Payload())
+
+}
+
+var msgHandler = func(client mqtt.Client, msg mqtt.Message) {
+	fmt.Println("接收到指令：", string(msg.Payload()))
 }
 
 var c mqtt.Client
@@ -41,6 +46,16 @@ func init() {
 	if token := c.Connect(); token.Wait() && token.Error() != nil {
 		panic(token.Error())
 	}
+	sub()
+
+}
+
+//sub 订阅某个主题的消息
+func sub() {
+	topic := "iot1/server/res"
+	token := c.Subscribe(topic, 2, msgHandler)
+	token.Wait()
+
 }
 
 //SendMqtt 通过mqtt发送消息
@@ -50,7 +65,7 @@ func SendMqtt(payload interface{}) {
 		fmt.Println("json打包出错", err.Error())
 	}
 	go func() {
-		token := c.Publish("iot1/server", 2, false, data)
+		token := c.Publish("iot1/server/send", 2, false, data)
 		err = token.Error()
 		if err != nil {
 			fmt.Println("mqtt出错", err.Error())
@@ -63,7 +78,7 @@ func SendMqtt(payload interface{}) {
 //SendMqttString 通过mqtt发送消息，文本格式
 func SendMqttString(payload string) {
 	go func() {
-		token := c.Publish("iot1/server", 2, false, payload)
+		token := c.Publish("iot1/server/send", 2, false, payload)
 		err := token.Error()
 		if err != nil {
 			fmt.Println("mqtt出错", err.Error())
