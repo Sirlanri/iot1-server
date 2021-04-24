@@ -4,12 +4,12 @@
 package configs
 
 //是否为本地开发环境
-var dev = true
+var dev = false
 
 //SQLConfg 数据库信息
 func SQLConfg() string {
 	var local = "root:123456@/iot1"
-	var serve = "iot1:123456@/iot1"
+	var serve = "m2m:123456@/mym2m"
 	if dev {
 		return local
 	}
@@ -21,7 +21,7 @@ func PortConfig() string {
 	if dev {
 		return ":8090"
 	} else {
-		//测试环境，暂定9100
+		//服务器环境，暂定9100
 		return ":9100"
 	}
 }
