@@ -25,7 +25,7 @@ func main() {
 
 	//接收传感器发来的内容
 	sensor := iot1.Party("/sensor")
-	sensor.Post("/humitemp", handlers.SendHumiTemp)
+	sensor.Get("/humitemp", handlers.SendHumiTemp)
 
 	//向传感器发送数据
 

@@ -23,7 +23,7 @@ func SendHumiTemp(con iris.Context) {
 	Temp = temp
 	Count++
 	//如果满60次，写入数据库
-	if Count == 6000 {
+	if Count == 6 {
 		fmt.Println("次数满 开始写入数据库")
 		go func() {
 			res1 := sqls.TempRes(float32(temp))

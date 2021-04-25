@@ -4,7 +4,7 @@
 package configs
 
 //是否为本地开发环境
-var dev = false
+var dev = true
 
 //SQLConfg 数据库信息
 func SQLConfg() string {
