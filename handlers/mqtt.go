@@ -3,12 +3,13 @@ package handlers
 import (
 	"encoding/json"
 	"fmt"
-	"log"
+	log1 "log"
 	"os"
 	"time"
 
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 	uuid "github.com/satori/go.uuid"
+	"github.com/sirlanri/iot1-server/log"
 )
 
 var f mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Message) {
@@ -18,7 +19,7 @@ var f mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Message) {
 }
 
 var msgHandler = func(client mqtt.Client, msg mqtt.Message) {
-	fmt.Println("接收到指令：", string(msg.Payload()))
+	log.Log.Debugln("接收到指令：", string(msg.Payload()))
 }
 
 var c mqtt.Client
@@ -33,7 +34,7 @@ func Createid() string {
 
 //初始化
 func init() {
-	mqtt.ERROR = log.New(os.Stdout, "", 0)
+	mqtt.ERROR = log1.New(os.Stdout, "", 0)
 
 	opts := mqtt.NewClientOptions().AddBroker("tcp://mqtt.ri-co.cn:1883").SetClientID("emqx_golang_" + Createid())
 
@@ -62,13 +63,13 @@ func sub() {
 func SendMqtt(payload interface{}) {
 	data, err := json.Marshal(payload)
 	if err != nil {
-		fmt.Println("json打包出错", err.Error())
+		log.Log.Errorln("json打包出错", err.Error())
 	}
 	go func() {
 		token := c.Publish("iot1/server/send", 2, false, data)
 		err = token.Error()
 		if err != nil {
-			fmt.Println("mqtt出错", err.Error())
+			log.Log.Errorln("mqtt出错", err.Error())
 		}
 		token.Wait()
 	}()
@@ -81,7 +82,7 @@ func SendMqttString(payload string) {
 		token := c.Publish("iot1/server/send", 2, false, payload)
 		err := token.Error()
 		if err != nil {
-			fmt.Println("mqtt出错", err.Error())
+			log.Log.Errorln("mqtt出错", err.Error())
 		}
 		token.Wait()
 	}()
@@ -93,7 +94,7 @@ func SendMqttIns(ins, topic string) {
 		token := c.Publish(topic, 1, false, ins)
 		err := token.Error()
 		if err != nil {
-			fmt.Println("mqtt发送指令出错", err.Error())
+			log.Log.Errorln("mqtt发送指令出错", err.Error())
 		}
 	}()
 }
@@ -104,7 +105,7 @@ func SendMqttInfo(payload string) {
 		token := c.Publish("iot1/server/info", 2, false, payload)
 		err := token.Error()
 		if err != nil {
-			fmt.Println("mqtt出错", err.Error())
+			log.Log.Errorln("mqtt出错", err.Error())
 		}
 		token.Wait()
 	}()

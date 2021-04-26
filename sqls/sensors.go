@@ -1,6 +1,6 @@
 package sqls
 
-import "fmt"
+import "github.com/sirlanri/iot1-server/log"
 
 //BodyRes SQL 写入人体传感器的数据
 func BodyRes(resFlag int) bool {
@@ -8,12 +8,12 @@ func BodyRes(resFlag int) bool {
 	_, err := tx.Exec(`insert into bodysensor (status) 
 		values (?)`, resFlag)
 	if err != nil {
-		fmt.Println("人体传感器，写入出错", err.Error())
+		log.Log.Errorln("人体传感器，写入出错", err.Error())
 		return false
 	}
 	err = tx.Commit()
 	if err != nil {
-		fmt.Println("人体传感器，commit出错", err.Error())
+		log.Log.Errorln("人体传感器，commit出错", err.Error())
 		return false
 	}
 	return true
@@ -25,12 +25,12 @@ func TempRes(temp float32) bool {
 	_, err := tx.Exec(`insert into tempsensor (num)
 		values (?)`, temp)
 	if err != nil {
-		fmt.Println("温度传感器，写入出错", err.Error())
+		log.Log.Errorln("温度传感器，写入出错", err.Error())
 		return false
 	}
 	err = tx.Commit()
 	if err != nil {
-		fmt.Println("温度传感器，commit出错", err.Error())
+		log.Log.Errorln("温度传感器，commit出错", err.Error())
 		return false
 	}
 	return true
@@ -42,12 +42,12 @@ func HumiRes(humi float32) bool {
 	_, err := tx.Exec(`insert into humisensor (num)
 		values (?)`, humi)
 	if err != nil {
-		fmt.Println("湿度传感器，写入出错", err.Error())
+		log.Log.Errorln("湿度传感器，写入出错", err.Error())
 		return false
 	}
 	err = tx.Commit()
 	if err != nil {
-		fmt.Println("湿度传感器，commit出错", err.Error())
+		log.Log.Errorln("湿度传感器，commit出错", err.Error())
 		return false
 	}
 	return true
@@ -59,12 +59,12 @@ func LightRes(light float32) bool {
 	_, err := tx.Exec(`insert into lightsensor (num)
 		values (?)`, light)
 	if err != nil {
-		fmt.Println("光照传感器，写入出错", err.Error())
+		log.Log.Errorln("光照传感器，写入出错", err.Error())
 		return false
 	}
 	err = tx.Commit()
 	if err != nil {
-		fmt.Println("光照传感器，commit出错", err.Error())
+		log.Log.Errorln("光照传感器，commit出错", err.Error())
 		return false
 	}
 	return true
@@ -76,12 +76,12 @@ func VoiceRes(voice float64) bool {
 	_, err := tx.Exec(`insert into voicesensor (num)
 		values (?)`, voice)
 	if err != nil {
-		fmt.Println("声音传感器，写入出错", err.Error())
+		log.Log.Errorln("声音传感器，写入出错", err.Error())
 		return false
 	}
 	err = tx.Commit()
 	if err != nil {
-		fmt.Println("声音传感器，commit出错", err.Error())
+		log.Log.Errorln("声音传感器，commit出错", err.Error())
 		return false
 	}
 	return true
@@ -96,7 +96,7 @@ func GetTimePer() (have, no int) {
 		SELECT COUNT(*) FROM bodysensor
 		WHERE itime>=DATE_SUB(now(),interval 1 day) AND status=0;`)
 	if err != nil {
-		fmt.Println("查询有无人出错", err.Error())
+		log.Log.Errorln("查询有无人出错", err.Error())
 		return 0, 0
 	}
 	flag := true
@@ -108,7 +108,7 @@ func GetTimePer() (have, no int) {
 			err = rows.Scan(&no)
 		}
 		if err != nil {
-			fmt.Println(err.Error())
+			log.Log.Errorln(err.Error())
 			panic("写入int出错")
 		}
 	}
@@ -122,14 +122,14 @@ func GetWeekTempHumi() (data map[string][]float32) {
 		WHERE itime>=DATE_SUB(now(),interval 7 day)
 		GROUP BY day(itime) ORDER BY day(itime);`)
 	if err != nil {
-		fmt.Println("查询温度平均值错误", err.Error())
+		log.Log.Errorln("查询温度平均值错误", err.Error())
 	}
 	var temps []float32
 	for tempRows.Next() {
 		var temp float32
 		err = tempRows.Scan(&temp)
 		if err != nil {
-			fmt.Println("读取temp数据出错", err.Error())
+			log.Log.Errorln("读取temp数据出错", err.Error())
 		}
 		temps = append(temps, temp)
 	}
@@ -138,14 +138,14 @@ func GetWeekTempHumi() (data map[string][]float32) {
 		WHERE itime>=DATE_SUB(now(),interval 7 day)
 		GROUP BY day(itime) ORDER BY day(itime);`)
 	if err != nil {
-		fmt.Println("查询温度平均值错误", err.Error())
+		log.Log.Errorln("查询温度平均值错误", err.Error())
 	}
 	var humis []float32
 	for humiRows.Next() {
 		var humi float32
 		err = humiRows.Scan(&humi)
 		if err != nil {
-			fmt.Println("读取humi数据出错", err.Error())
+			log.Log.Errorln("读取humi数据出错", err.Error())
 		}
 		humis = append(humis, humi)
 	}
