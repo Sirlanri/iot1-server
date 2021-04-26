@@ -88,10 +88,10 @@ func SendMqttString(payload string) {
 	}()
 }
 
-//SendMqttIns 通过mqtt发送指令控制硬件
+//SendMqttIns 通过mqtt发送指令控制硬件，topic自动添加iot1/
 func SendMqttIns(ins, topic string) {
 	go func() {
-		token := c.Publish(topic, 1, false, ins)
+		token := c.Publish("iot1/"+topic, 1, false, ins)
 		err := token.Error()
 		if err != nil {
 			log.Log.Errorln("mqtt发送指令出错", err.Error())

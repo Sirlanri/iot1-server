@@ -11,6 +11,7 @@ import (
 var Log = &logrus.Logger{}
 
 func init() {
+	//控制log级别
 	level := logrus.DebugLevel
 	Log = &logrus.Logger{
 		Out:   os.Stderr,

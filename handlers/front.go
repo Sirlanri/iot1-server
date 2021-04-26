@@ -36,7 +36,7 @@ func Setled(con iris.Context) {
 	//操作码：on off blink
 	code := con.URLParam("code")
 	if code == "on" || code == "off" || code == "blink" {
-		SendMqttString(code)
+		SendMqttIns(code, "pi/res/led")
 		return
 	}
 	con.WriteString("传入数据不合法")

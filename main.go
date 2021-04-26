@@ -5,11 +5,9 @@ import (
 	"github.com/kataras/iris/v12"
 	"github.com/sirlanri/iot1-server/configs"
 	"github.com/sirlanri/iot1-server/handlers"
-	"github.com/sirlanri/iot1-server/log"
 )
 
 func main() {
-	log.Log.Errorln()
 	app := iris.New()
 	app.OnErrorCode(iris.StatusNotFound, handlers.NotFound)
 	crs := cors.New(cors.Options{

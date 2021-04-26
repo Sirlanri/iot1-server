@@ -27,11 +27,8 @@ func SendHumiTemp(con iris.Context) {
 	if Count == 6 {
 		log.Log.Debugln("次数满 开始写入数据库")
 		go func() {
-			res1 := sqls.TempRes(float32(temp))
-			res2 := sqls.HumiRes(float32(humi))
-			if res1 && res2 {
-				log.Log.Debugln("数据库写入完毕")
-			}
+			sqls.TempRes(float32(temp))
+			sqls.HumiRes(float32(humi))
 		}()
 		Count = 0
 	}
