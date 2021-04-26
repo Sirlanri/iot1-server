@@ -87,6 +87,17 @@ func SendMqttString(payload string) {
 	}()
 }
 
+//SendMqttIns 通过mqtt发送指令控制硬件
+func SendMqttIns(ins, topic string) {
+	go func() {
+		token := c.Publish(topic, 1, false, ins)
+		err := token.Error()
+		if err != nil {
+			fmt.Println("mqtt发送指令出错", err.Error())
+		}
+	}()
+}
+
 //SendMqttInfo 通过mqtt发送报错/消息，文本格式
 func SendMqttInfo(payload string) {
 	go func() {
