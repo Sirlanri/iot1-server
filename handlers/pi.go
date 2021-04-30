@@ -10,25 +10,19 @@ import (
 
 //SendHumiTemp 接收树莓派发来的温湿度信息
 func SendHumiTemp(con iris.Context) {
-	humi, err := con.URLParamFloat64("humi")
-	if err != nil {
-		log.Log.Errorln("sensor 传入湿度错误 ", err.Error())
-		return
-	}
+	humi := con.URLParam("humi")
+
 	Humi = humi
-	temp, err := con.URLParamFloat64("temp")
-	if err != nil {
-		log.Log.Errorln("sensor 传入温度错误 ", err.Error())
-		return
-	}
+	temp := con.URLParam("temp")
+
 	Temp = temp
 	Count++
 	//如果满60次，写入数据库
 	if Count == 6 {
 		log.Log.Debugln("次数满 开始写入数据库")
 		go func() {
-			sqls.TempRes(float32(temp))
-			sqls.HumiRes(float32(humi))
+			sqls.TempRes(temp)
+			sqls.HumiRes(humi)
 		}()
 		Count = 0
 	}

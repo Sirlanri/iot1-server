@@ -20,7 +20,7 @@ func BodyRes(resFlag int) bool {
 }
 
 //TempRes -SQL 写入温度数据 float
-func TempRes(temp float32) bool {
+func TempRes(temp string) bool {
 	tx, _ := Db.Begin()
 	_, err := tx.Exec(`insert into tempsensor (num)
 		values (?)`, temp)
@@ -37,7 +37,7 @@ func TempRes(temp float32) bool {
 }
 
 //HumiRes -SQL 写入湿度数据 float
-func HumiRes(humi float32) bool {
+func HumiRes(humi string) bool {
 	tx, _ := Db.Begin()
 	_, err := tx.Exec(`insert into humisensor (num)
 		values (?)`, humi)
