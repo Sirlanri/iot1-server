@@ -33,6 +33,7 @@ func TempRes(temp string) bool {
 		log.Log.Errorln("温度传感器，commit出错", err.Error())
 		return false
 	}
+	log.Log.Debugln("Temp SQL写入完成")
 	return true
 }
 
@@ -50,6 +51,7 @@ func HumiRes(humi string) bool {
 		log.Log.Errorln("湿度传感器，commit出错", err.Error())
 		return false
 	}
+	log.Log.Debugln("Humi SQL写入完成")
 	return true
 }
 

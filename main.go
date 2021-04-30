@@ -20,6 +20,8 @@ func main() {
 	front := iot1.Party("/web")
 	//前端获取实时数据
 	front.Get("/getRealtime", handlers.GetRealtime)
+	front.Get("/getRealTemp", handlers.GetRealTemp)
+	front.Get("/getRealHumi", handlers.GetRealHumi)
 	front.Get("/setled", handlers.Setled)
 	front.Get("/getWeekdata", handlers.GetWeekTempHumi)
 
@@ -28,7 +30,10 @@ func main() {
 	sensor.Get("/humitemp", handlers.SendHumiTemp)
 	sensor.Get("/test", handlers.Test)
 
-	//向传感器发送数据
+	//接收树莓派的数据
+	pi := iot1.Party("/pi")
+	pi.Post("/temps", handlers.SendTemps)
+	pi.Post("/humis", handlers.SendHumis)
 
 	app.Run(iris.Addr(configs.PortConfig()))
 

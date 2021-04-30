@@ -11,7 +11,7 @@ func GetWeekTempHumi(con iris.Context) {
 	con.JSON(data)
 }
 
-//GetRealtime 获取内存中的实时温湿度数据
+//GetRealtime 获取内存中的实时温湿度数据 del
 func GetRealtime(con iris.Context) {
 	data := map[string]string{
 		"temp": Temp,
@@ -19,6 +19,16 @@ func GetRealtime(con iris.Context) {
 	}
 	con.JSON(data)
 	SendMqttInfo("获取实时数据")
+}
+
+//GetRealTemp 获取实时温度*3
+func GetRealTemp(con iris.Context) {
+	con.JSON(Temps)
+}
+
+//获取实时潮湿度*3
+func GetRealHumi(con iris.Context) {
+	con.JSON(Humis)
 }
 
 //Setled 前端控制LED

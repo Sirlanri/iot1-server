@@ -37,3 +37,36 @@ func SendHumiTemp(con iris.Context) {
 func Test(con iris.Context) {
 	con.WriteString("Success")
 }
+
+//SendTemps 接收树莓派发送温度*3
+func SendTemps(con iris.Context) {
+	var data TempStruct
+	err := con.ReadJSON(&data)
+	if err != nil {
+		log.Log.Warnln("接收树莓派温度*3，传入数据错误", err.Error())
+		con.StatusCode(iris.StatusBadRequest)
+		con.WriteString("传入温度*3格式不正确")
+		return
+	}
+	log.Log.Debugln("接收树莓派温度*3成功", data.Temp1, data.Temp2, data.Temp3)
+	Temps = data
+	con.WriteString("server已接收温度*3")
+
+	go sqls.TempRes(data.Temp1)
+}
+
+//SendHumis 接收树莓派发送的湿度*3
+func SendHumis(con iris.Context) {
+	var data HumiStruct
+	err := con.ReadJSON(&data)
+	if err != nil {
+		log.Log.Warnln("接收树莓派湿度*3 传入错误", err.Error())
+		con.StatusCode(iris.StatusBadRequest)
+		con.WriteString("传入湿度*3格式不正确")
+		return
+	}
+	log.Log.Debugf("接收树莓派潮湿度*3成功 %s %s %s", data.Humi1, data.Humi2, data.Humi3)
+	Humis = data
+	con.WriteString("server已接收潮湿度*3")
+	go sqls.HumiRes(data.Humi1)
+}
