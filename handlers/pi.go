@@ -28,7 +28,7 @@ func SendHumiTemp(con iris.Context) {
 	}
 	//strTemp := strconv.FormatFloat(temp, 'f', 2, 64)
 	//strHumi := strconv.FormatFloat(humi, 'f', 2, 64)
-	words := fmt.Sprintf("温湿度接收成功\n温度：%.2f\n湿度%.2f", temp, humi)
+	words := fmt.Sprintf("温湿度接收成功\n温度：%.2s\n湿度%.2s", temp, humi)
 	con.WriteString("Temp Humi confirmed")
 	SendMqttInfo(words)
 
