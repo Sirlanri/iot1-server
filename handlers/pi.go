@@ -70,3 +70,18 @@ func SendHumis(con iris.Context) {
 	con.WriteString("server已接收潮湿度*3")
 	go sqls.HumiRes(data.Humi1)
 }
+
+// 接收树莓派发送的雨量&增量
+func SendRain(con iris.Context) {
+	rain := con.URLParam("rain")
+	inc := con.URLParam("inc")
+	if rain == "" || inc == "" {
+		log.Log.Warnln("传入雨量数据错误")
+		con.StatusCode(400)
+		con.WriteString("传入雨量数据错误")
+		return
+	}
+	Rain = rain
+	RainInc = inc
+	con.WriteString("已接收雨量&增量")
+}

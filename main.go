@@ -22,6 +22,7 @@ func main() {
 	front.Get("/getRealtime", handlers.GetRealtime)
 	front.Get("/getRealTemp", handlers.GetRealTemp)
 	front.Get("/getRealHumi", handlers.GetRealHumi)
+	front.Get("/getRealRainInc", handlers.GetRealRainInc)
 	front.Get("/setled", handlers.Setled)
 	front.Get("/getWeekdata", handlers.GetWeekTempHumi)
 
@@ -34,6 +35,7 @@ func main() {
 	pi := iot1.Party("/pi")
 	pi.Post("/temps", handlers.SendTemps)
 	pi.Post("/humis", handlers.SendHumis)
+	pi.Get("/rain", handlers.SendRain)
 
 	app.Run(iris.Addr(configs.PortConfig()))
 

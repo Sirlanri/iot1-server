@@ -31,6 +31,15 @@ func GetRealHumi(con iris.Context) {
 	con.JSON(Humis)
 }
 
+//获取实时雨量&增量
+func GetRealRainInc(con iris.Context) {
+	data := map[string]string{
+		"rain": Rain,
+		"inc":  RainInc,
+	}
+	con.JSON(data)
+}
+
 //Setled 前端控制LED
 func Setled(con iris.Context) {
 	auth := con.URLParam("auth")
