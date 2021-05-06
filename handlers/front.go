@@ -45,6 +45,11 @@ func GetRealWater(con iris.Context) {
 	con.WriteString(Water)
 }
 
+//获取实时光照
+func GetRealLight(con iris.Context) {
+	con.WriteString(Light)
+}
+
 //Setled 前端控制LED
 func Setled(con iris.Context) {
 	auth := con.URLParam("auth")

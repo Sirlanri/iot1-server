@@ -11,7 +11,10 @@ var (
 	RainInc float64 //雨增量
 
 	Water string //水量
-	Count int16  //计数
+
+	Light string //光照
+
+	Count int16 //计数
 )
 
 //温度*3

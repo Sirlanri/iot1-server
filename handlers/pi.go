@@ -97,3 +97,16 @@ func SendWater(con iris.Context) {
 	Water = water
 	con.WriteString("接收水量成功")
 }
+
+//接收树莓派发送的光照强度
+func SendLight(con iris.Context) {
+	light := con.URLParam("light")
+	if light == "" {
+		log.Log.Warn("树莓派传入光照强度出错 ")
+		con.StatusCode(400)
+		con.WriteString("树莓派传入光照强度出错")
+		return
+	}
+	Light = light
+	con.WriteString("接收光照成功")
+}
