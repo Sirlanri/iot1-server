@@ -33,7 +33,7 @@ func GetRealHumi(con iris.Context) {
 
 //获取实时雨量&增量
 func GetRealRainInc(con iris.Context) {
-	data := map[string]string{
+	data := map[string]float64{
 		"rain": Rain,
 		"inc":  RainInc,
 	}

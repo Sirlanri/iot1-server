@@ -7,8 +7,8 @@ var (
 	Humis HumiStruct //记录湿度*3
 	Temps TempStruct //记录温度*3
 
-	Rain    string //雨量
-	RainInc string //雨增量
+	Rain    float64 //雨量
+	RainInc float64 //雨增量
 
 	Water string //水量
 	Count int16  //计数
