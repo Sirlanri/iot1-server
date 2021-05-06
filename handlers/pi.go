@@ -85,3 +85,15 @@ func SendRain(con iris.Context) {
 	RainInc = inc
 	con.WriteString("已接收雨量&增量")
 }
+
+//接收树莓派发送的水量
+func SendWater(con iris.Context) {
+	water := con.URLParam("water")
+	if water == "" {
+		con.StatusCode(400)
+		con.WriteString("传入水量数据错误")
+		return
+	}
+	Water = water
+	con.WriteString("接收水量成功")
+}

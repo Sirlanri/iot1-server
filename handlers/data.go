@@ -9,7 +9,9 @@ var (
 
 	Rain    string //雨量
 	RainInc string //雨增量
-	Count   int16  //计数
+
+	Water string //水量
+	Count int16  //计数
 )
 
 //温度*3

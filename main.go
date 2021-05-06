@@ -23,6 +23,8 @@ func main() {
 	front.Get("/getRealTemp", handlers.GetRealTemp)
 	front.Get("/getRealHumi", handlers.GetRealHumi)
 	front.Get("/getRealRainInc", handlers.GetRealRainInc)
+	front.Get("/getRealWater", handlers.GetRealWater)
+
 	front.Get("/setled", handlers.Setled)
 	front.Get("/getWeekdata", handlers.GetWeekTempHumi)
 
@@ -36,6 +38,7 @@ func main() {
 	pi.Post("/temps", handlers.SendTemps)
 	pi.Post("/humis", handlers.SendHumis)
 	pi.Get("/rain", handlers.SendRain)
+	pi.Get("/water", handlers.SendWater)
 
 	app.Run(iris.Addr(configs.PortConfig()))
 

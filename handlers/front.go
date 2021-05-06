@@ -40,6 +40,11 @@ func GetRealRainInc(con iris.Context) {
 	con.JSON(data)
 }
 
+//获取实时水量
+func GetRealWater(con iris.Context) {
+	con.WriteString(Water)
+}
+
 //Setled 前端控制LED
 func Setled(con iris.Context) {
 	auth := con.URLParam("auth")
