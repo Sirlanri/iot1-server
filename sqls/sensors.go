@@ -21,8 +21,12 @@ func BodyRes(resFlag int) bool {
 
 //TempRes -SQL 写入温度数据 float
 func TempRes(temp string) bool {
-	tx, _ := Db.Begin()
-	_, err := tx.Exec(`insert into tempsensor (num)
+	tx, err := Db.Begin()
+	if err != nil {
+		log.Log.Errorln("Temp写入数据库 初始化出错", err.Error())
+		return false
+	}
+	_, err = tx.Exec(`insert into tempsensor (num)
 		values (?)`, temp)
 	if err != nil {
 		log.Log.Errorln("温度传感器，写入出错", err.Error())
@@ -39,13 +43,18 @@ func TempRes(temp string) bool {
 
 //HumiRes -SQL 写入湿度数据 float
 func HumiRes(humi string) bool {
-	tx, _ := Db.Begin()
-	_, err := tx.Exec(`insert into humisensor (num)
+	tx, err := Db.Begin()
+	if err != nil {
+		log.Log.Errorln("Humi写入数据库 初始化出错", err.Error())
+		return false
+	}
+	_, err = tx.Exec(`insert into humisensor (num)
 		values (?)`, humi)
 	if err != nil {
 		log.Log.Errorln("湿度传感器，写入出错", err.Error())
 		return false
 	}
+
 	err = tx.Commit()
 	if err != nil {
 		log.Log.Errorln("湿度传感器，commit出错", err.Error())
@@ -119,10 +128,15 @@ func GetTimePer() (have, no int) {
 
 //GetWeekTempHumi 获取一周中每天的温度&湿度平均值
 func GetWeekTempHumi() (data map[string][]float32) {
-	tx, _ := Db.Begin()
+	tx, err := Db.Begin()
+	if err != nil {
+		log.Log.Errorln("查询一周温湿度平均值出错 ", err.Error())
+		return
+	}
 	tempRows, err := tx.Query(`SELECT round(AVG(num),2) FROM tempsensor 
 		WHERE itime>=DATE_SUB(now(),interval 7 day)
 		GROUP BY day(itime) ORDER BY day(itime);`)
+	defer tempRows.Close()
 	if err != nil {
 		log.Log.Errorln("查询温度平均值错误", err.Error())
 	}
@@ -139,6 +153,7 @@ func GetWeekTempHumi() (data map[string][]float32) {
 	humiRows, err := tx.Query(`SELECT round(AVG(num),2) FROM humisensor 
 		WHERE itime>=DATE_SUB(now(),interval 7 day)
 		GROUP BY day(itime) ORDER BY day(itime);`)
+	defer humiRows.Close()
 	if err != nil {
 		log.Log.Errorln("查询温度平均值错误", err.Error())
 	}

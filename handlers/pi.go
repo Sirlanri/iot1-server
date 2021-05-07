@@ -20,10 +20,10 @@ func SendHumiTemp(con iris.Context) {
 	//如果满60次，写入数据库
 	if Count == 6 {
 		log.Log.Debugln("次数满 开始写入数据库")
-		go func() {
-			sqls.TempRes(temp)
-			sqls.HumiRes(humi)
-		}()
+
+		sqls.TempRes(temp)
+		sqls.HumiRes(humi)
+
 		Count = 0
 	}
 	//strTemp := strconv.FormatFloat(temp, 'f', 2, 64)
@@ -52,7 +52,7 @@ func SendTemps(con iris.Context) {
 	Temps = data
 	con.WriteString("server已接收温度*3")
 
-	go sqls.TempRes(data.Temp1)
+	sqls.TempRes(data.Temp1)
 }
 
 //SendHumis 接收树莓派发送的湿度*3
@@ -68,7 +68,7 @@ func SendHumis(con iris.Context) {
 	log.Log.Debugf("接收树莓派潮湿度*3成功 %s %s %s", data.Humi1, data.Humi2, data.Humi3)
 	Humis = data
 	con.WriteString("server已接收潮湿度*3")
-	go sqls.HumiRes(data.Humi1)
+	sqls.HumiRes(data.Humi1)
 }
 
 // 接收树莓派发送的雨量&增量

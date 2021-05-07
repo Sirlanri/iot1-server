@@ -4,6 +4,7 @@ package sqls
 
 import (
 	"database/sql"
+	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/sirlanri/iot1-server/configs"
@@ -30,6 +31,10 @@ func ConnectDB() *sql.DB {
 		log.Log.Errorln("初始化-数据库-用户/密码/库验证失败", Db.Ping().Error())
 		return nil
 	}
+
+	//Db.SetMaxIdleConns(20)
+	Db.SetMaxOpenConns(100)
+	Db.SetConnMaxLifetime(time.Millisecond * 500)
 
 	return Db
 }
