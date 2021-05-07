@@ -12,7 +12,7 @@ var Log = &logrus.Logger{}
 
 func init() {
 	//控制log级别
-	level := logrus.WarnLevel
+	level := logrus.DebugLevel
 	Log = &logrus.Logger{
 		Out:   os.Stderr,
 		Level: level,

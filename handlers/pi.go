@@ -35,6 +35,7 @@ func SendHumiTemp(con iris.Context) {
 }
 
 func Test(con iris.Context) {
+	sqls.Mytest()
 	con.WriteString("Success")
 }
 
@@ -69,6 +70,7 @@ func SendHumis(con iris.Context) {
 	Humis = data
 	con.WriteString("server已接收潮湿度*3")
 	sqls.HumiRes(data.Humi1)
+
 }
 
 // 接收树莓派发送的雨量&增量

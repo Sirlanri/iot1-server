@@ -4,7 +4,6 @@ package sqls
 
 import (
 	"database/sql"
-	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/sirlanri/iot1-server/configs"
@@ -17,6 +16,7 @@ var Db *sql.DB
 //初始化，自动创建db指针
 func init() {
 	Db = ConnectDB()
+
 }
 
 //ConnectDB 初始化时，连接数据库
@@ -34,7 +34,33 @@ func ConnectDB() *sql.DB {
 
 	//Db.SetMaxIdleConns(20)
 	Db.SetMaxOpenConns(100)
-	Db.SetConnMaxLifetime(time.Millisecond * 500)
+	//Db.SetConnMaxLifetime(time.Millisecond * 500)
 
 	return Db
+}
+
+func Mytest() {
+	log.Log.Debugln("开始测试")
+	go func() {
+
+		for i := 0; i < 200; i++ {
+			if !HumiRes("50") {
+				log.Log.Warn(i, "错误")
+			}
+		}
+		log.Log.Debugln("humi")
+	}()
+
+	for i := 0; i < 200; i++ {
+		if !TempRes("50") {
+			log.Log.Warn(i, "错误")
+		}
+	}
+	log.Log.Debugln("temp")
+
+	for i := 0; i < 200; i++ {
+		GetWeekTempHumi()
+	}
+
+	log.Log.Debugln("测试完毕")
 }
