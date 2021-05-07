@@ -2,62 +2,27 @@ package sqls
 
 import "github.com/sirlanri/iot1-server/log"
 
-//BodyRes SQL 写入人体传感器的数据
-func BodyRes(resFlag int) bool {
-	tx, _ := Db.Begin()
-	_, err := tx.Exec(`insert into bodysensor (status) 
-		values (?)`, resFlag)
-	if err != nil {
-		log.Log.Errorln("人体传感器，写入出错", err.Error())
-		return false
-	}
-	err = tx.Commit()
-	if err != nil {
-		log.Log.Errorln("人体传感器，commit出错", err.Error())
-		return false
-	}
-	return true
-}
-
 //TempRes -SQL 写入温度数据 float
 func TempRes(temp string) bool {
-	tx, err := Db.Begin()
+	log.Log.Debug("开始写入温度")
+	_, err := Db.Exec(`insert into tempsensor (num)
+	values (?)`, temp)
 	if err != nil {
 		log.Log.Errorln("Temp写入数据库 初始化出错", err.Error())
 		return false
 	}
-	_, err = tx.Exec(`insert into tempsensor (num)
-		values (?)`, temp)
-	if err != nil {
-		log.Log.Errorln("温度传感器，写入出错", err.Error())
-		return false
-	}
-	err = tx.Commit()
-	if err != nil {
-		log.Log.Errorln("温度传感器，commit出错", err.Error())
-		return false
-	}
+
 	log.Log.Debugln("Temp SQL写入完成")
 	return true
 }
 
 //HumiRes -SQL 写入湿度数据 float
 func HumiRes(humi string) bool {
-	tx, err := Db.Begin()
-	if err != nil {
-		log.Log.Errorln("Humi写入数据库 初始化出错", err.Error())
-		return false
-	}
-	_, err = tx.Exec(`insert into humisensor (num)
+
+	_, err := Db.Exec(`insert into humisensor (num)
 		values (?)`, humi)
 	if err != nil {
 		log.Log.Errorln("湿度传感器，写入出错", err.Error())
-		return false
-	}
-
-	err = tx.Commit()
-	if err != nil {
-		log.Log.Errorln("湿度传感器，commit出错", err.Error())
 		return false
 	}
 	log.Log.Debugln("Humi SQL写入完成")
@@ -66,42 +31,19 @@ func HumiRes(humi string) bool {
 
 //LightRes -SQL 光照传感器 写入光照数据
 func LightRes(light float32) bool {
-	tx, _ := Db.Begin()
-	_, err := tx.Exec(`insert into lightsensor (num)
+	_, err := Db.Exec(`insert into lightsensor (num)
 		values (?)`, light)
 	if err != nil {
 		log.Log.Errorln("光照传感器，写入出错", err.Error())
 		return false
 	}
-	err = tx.Commit()
-	if err != nil {
-		log.Log.Errorln("光照传感器，commit出错", err.Error())
-		return false
-	}
-	return true
-}
 
-// VoiceRes -SQL 声音传感器 写入
-func VoiceRes(voice float64) bool {
-	tx, _ := Db.Begin()
-	_, err := tx.Exec(`insert into voicesensor (num)
-		values (?)`, voice)
-	if err != nil {
-		log.Log.Errorln("声音传感器，写入出错", err.Error())
-		return false
-	}
-	err = tx.Commit()
-	if err != nil {
-		log.Log.Errorln("声音传感器，commit出错", err.Error())
-		return false
-	}
 	return true
 }
 
 //GetTimePer -SQL 获取有无人的次数
 func GetTimePer() (have, no int) {
-	tx, _ := Db.Begin()
-	rows, err := tx.Query(`SELECT COUNT(*) FROM bodysensor
+	rows, err := Db.Query(`SELECT COUNT(*) FROM bodysensor
 		WHERE itime>=DATE_SUB(now(),interval 1 day) AND status=1 
 		UNION 
 		SELECT COUNT(*) FROM bodysensor
@@ -128,12 +70,7 @@ func GetTimePer() (have, no int) {
 
 //GetWeekTempHumi 获取一周中每天的温度&湿度平均值
 func GetWeekTempHumi() (data map[string][]float32) {
-	tx, err := Db.Begin()
-	if err != nil {
-		log.Log.Errorln("查询一周温湿度平均值出错 ", err.Error())
-		return
-	}
-	tempRows, err := tx.Query(`SELECT round(AVG(num),2) FROM tempsensor 
+	tempRows, err := Db.Query(`SELECT round(AVG(num),2) FROM tempsensor 
 		WHERE itime>=DATE_SUB(now(),interval 7 day)
 		GROUP BY day(itime) ORDER BY day(itime);`)
 	defer tempRows.Close()
@@ -150,7 +87,7 @@ func GetWeekTempHumi() (data map[string][]float32) {
 		temps = append(temps, temp)
 	}
 
-	humiRows, err := tx.Query(`SELECT round(AVG(num),2) FROM humisensor 
+	humiRows, err := Db.Query(`SELECT round(AVG(num),2) FROM humisensor 
 		WHERE itime>=DATE_SUB(now(),interval 7 day)
 		GROUP BY day(itime) ORDER BY day(itime);`)
 	defer humiRows.Close()

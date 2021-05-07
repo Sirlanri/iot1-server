@@ -11,12 +11,16 @@ import (
 )
 
 //Db 创建的唯一指针
-var Db *sql.DB
+var (
+	Db *sql.DB
+	tx *sql.Tx
+)
 
 //初始化，自动创建db指针
 func init() {
 	Db = ConnectDB()
 
+	tx, _ = Db.Begin()
 }
 
 //ConnectDB 初始化时，连接数据库
@@ -33,8 +37,9 @@ func ConnectDB() *sql.DB {
 	}
 
 	//Db.SetMaxIdleConns(20)
-	Db.SetMaxOpenConns(100)
+	//Db.SetMaxOpenConns(100)
 	//Db.SetConnMaxLifetime(time.Millisecond * 500)
+	//Db.SetConnMaxLifetime(time.Second)
 
 	return Db
 }
