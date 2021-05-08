@@ -1,14 +1,19 @@
 package sqls
 
-import "github.com/sirlanri/iot1-server/log"
+import (
+	"strconv"
+
+	"github.com/sirlanri/iot1-server/log"
+)
 
 //TempRes -SQL 写入温度数据 float
 func TempRes(temp string) bool {
 	log.Log.Debug("开始写入温度")
+	data, _ := strconv.ParseFloat(temp, 64)
 	_, err := Db.Exec(`insert into tempsensor (num)
-	values (?)`, temp)
+	values (?)`, data)
 	if err != nil {
-		log.Log.Errorln("Temp写入数据库 初始化出错", err.Error())
+		log.Log.Errorln("Temp写入数据库出错", err.Error())
 		return false
 	}
 
@@ -18,11 +23,11 @@ func TempRes(temp string) bool {
 
 //HumiRes -SQL 写入湿度数据 float
 func HumiRes(humi string) bool {
-
+	data, _ := strconv.ParseFloat(humi, 64)
 	_, err := Db.Exec(`insert into humisensor (num)
-		values (?)`, humi)
+		values (?)`, data)
 	if err != nil {
-		log.Log.Errorln("湿度传感器，写入出错", err.Error())
+		log.Log.Errorln("humi写入数据库出错", err.Error())
 		return false
 	}
 	log.Log.Debugln("Humi SQL写入完成")
