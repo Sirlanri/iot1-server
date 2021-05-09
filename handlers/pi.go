@@ -56,6 +56,46 @@ func SendTemps(con iris.Context) {
 	sqls.TempRes(data.Temp1)
 }
 
+//接收单个温度数据
+func SendSingleTemp(con iris.Context) {
+	name := con.URLParam("name")
+	num := con.URLParam("temp")
+	if num == "" {
+		con.WriteString("传入数据空")
+		return
+	}
+	switch name {
+	case "esp1":
+		Temps.Temp1 = num
+	case "esp2":
+		Temps.Temp2 = num
+	case "esp3":
+		Temps.Temp3 = num
+	}
+	con.WriteString("Temp confirmed")
+	sqls.TempRes(num)
+}
+
+//接收单个潮湿度数据
+func SendSingleHumi(con iris.Context) {
+	name := con.URLParam("name")
+	num := con.URLParam("humi")
+	if num == "" {
+		con.WriteString("传入数据空")
+		return
+	}
+	switch name {
+	case "esp1":
+		Humis.Humi1 = num
+	case "esp2":
+		Humis.Humi2 = num
+	case "esp3":
+		Humis.Humi3 = num
+	}
+	con.WriteString("Temp confirmed")
+	sqls.HumiRes(num)
+}
+
 //SendHumis 接收树莓派发送的湿度*3
 func SendHumis(con iris.Context) {
 	var data HumiStruct

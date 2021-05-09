@@ -38,6 +38,8 @@ func main() {
 	pi := iot1.Party("/pi")
 	pi.Post("/temps", handlers.SendTemps)
 	pi.Post("/humis", handlers.SendHumis)
+	pi.Get("/temp", handlers.SendSingleTemp)
+	pi.Get("/humi", handlers.SendSingleHumi)
 	pi.Get("/rain", handlers.SendRain)
 	pi.Get("/water", handlers.SendWater)
 	pi.Get("/light", handlers.SendLight)
